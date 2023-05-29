@@ -36,10 +36,12 @@
 
     <script src="./libs/gmaps-markerwithlabel-1.9.1.min.js"></script>
 
-    <script type=”text/javascript” src=”https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js”></script>
+    <!-- <script type=”text/javascript” src=”https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js”></script> -->
+    <!-- <script type = "text/JavaScript" src ="https://MomentJS.com/downloads/moment-with-locales.js"></script> -->
+    <script type = "text/JavaScript" src ="https://MomentJS.com/downloads/moment-with-locales.js"></script>
 </head>
 <body>
-    <div id="table_drivers_container" style="padding: 50px">
+    <div id="table_drivers_container" style="padding: 10px 50px 0px">
         <h3>Danh sách tài xế</h3>
         <table id="table_drivers" class="table table-striped">
 
@@ -47,7 +49,13 @@
     </div>
     <div id="map_container" style="width: 100%; height: 100vh; padding: 50px">
         <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="License Plate" aria-label="License Plate" id="license_plate">
+            <input 
+                type="text" 
+                class="form-control" 
+                placeholder="License Plate" 
+                aria-label="License Plate" 
+                id="license_plate"
+            >
             <input id="start_time" class="form-control" type="datetime-local" step="1" placeholder="Start Time" aria-label="Start Time" id="start_time"/> 
             <input id="end_time" type="datetime-local" class="form-control" step="1" placeholder="End Time" aria-label="End Time" id="end_time"> 
             <button class="btn btn-outline-secondary" 
@@ -61,7 +69,7 @@
     </div>
     <script src="./main.js"></script>
     <script>
- 
+       
     </script>
 </body>
 </html>

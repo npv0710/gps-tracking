@@ -122,6 +122,7 @@ $(document).ready(function (){
     }
     
     var drivers = [
+        // Binh Anh
         {
             license_plate: '29E04768',
             device_id: '866728062467831'
@@ -161,6 +162,48 @@ $(document).ready(function (){
         {
             license_plate: '29E04827',
             device_id: '866728062499206'
+        },
+
+        // DT BK
+        {
+            license_plate: '29E05989',
+            device_id: '10004263'
+        },
+        {
+            license_plate: '29E04853',
+            device_id: '10004304'
+        },
+        {
+            license_plate: '29E05743',
+            device_id: '10004197'
+        },
+        {
+            license_plate: '29E04783',
+            device_id: '10004369'
+        },
+        {
+            license_plate: '29E04860',
+            device_id: '10004017'
+        },
+        {
+            license_plate: '29E04512',
+            device_id: '10003449'
+        },
+        {
+            license_plate: '29E04784',
+            device_id: '10003946'
+        },
+        {
+            license_plate: '29E04798',
+            device_id: '10003882'
+        },
+        {
+            license_plate: '29E05894',
+            device_id: '10003936'
+        },
+        {
+            license_plate: '29E05733',
+            device_id: '10003856'
         }
     ]
     var records = []
@@ -203,6 +246,7 @@ $(document).ready(function (){
             },
             "ordering": false,
             "select": true,
+            pageLength: 5
         })
     }
 
@@ -210,31 +254,66 @@ $(document).ready(function (){
 
     createTableDrivers();
 
+    var startMarker = new google.maps.Marker({
+        title: "Điểm đón khách",
+        icon: 'https://s3-ap-southeast-1.amazonaws.com/image-emd/defaults/map-marker-1-32x32.png'
+    })
+
+    var endMarker = new google.maps.Marker({
+        title: "Điểm trả",
+        icon: 'https://s3-ap-southeast-1.amazonaws.com/image-emd/defaults/map-marker-2-32x32.png'
+    })
+
     function drawTracking(points, startPoint, endPoint) {
-        startMarker = new google.maps.Marker({
-            position: startPoint,
-            title: "Điểm đón khách",
-            icon: 'https://s3-ap-southeast-1.amazonaws.com/image-emd/defaults/map-marker-1-32x32.png'
-        });
-        endMarker = new google.maps.Marker({
-            position: endPoint,
-            title: "Điểm trả",
-            icon: 'https://s3-ap-southeast-1.amazonaws.com/image-emd/defaults/map-marker-2-32x32.png'
-        });
+        clearMap()
+
+        startMarker.setPosition(startPoint)
+        endMarker.setPosition(endPoint)
         startMarker.setMap(map)
         endMarker.setMap(map)
+
         polylineTracking = new google.maps.Polyline({
             path: points,
             strokeColor: "#02A6FF",
             strokeOpacity: 0.85,
             strokeWeight: 4.5
         });
+
         polylineTracking.setMap(map)
+
+        // set center map
+        let centerPoint = new google.maps.LatLng(parseFloat((startMarker.getPosition().lat() + endMarker.getPosition().lat())/2), parseFloat((startMarker.getPosition().lng() + endMarker.getPosition().lng())/2));
+        map.setCenter(centerPoint);
+
+        let bounds = new google.maps.LatLngBounds();
+        bounds.extend(startMarker.getPosition());
+        bounds.extend(endMarker.getPosition());
+        map.fitBounds(bounds);
     }
+
+    function clearMap() {
+        startMarker.setMap(null)
+        startMarker.setMap(null)
+        polylineTracking.setMap(null)
+        polylineTracking = null
+    }
+
+    function calculateDistanceTwoPoints(point1, point2) {// calculate distance points
+        let PI = 3.141592653589793;
+        let EARTH_RADIUS = 6371000//(m);
+        let floatRadiansLat1 = parseFloat(point1.lat) * PI / 180;
+        let floatRadiansLng1 = parseFloat(point1.lng) * PI / 180;
+        let floatRadiansLat2 = parseFloat(point2.lat) * PI / 180;
+        let floatRadiansLng2 = parseFloat(point2.lng) * PI / 180;
+        let deltaD = Math.acos(Math.sin(floatRadiansLat1) * Math.sin(floatRadiansLat2) + Math.cos(floatRadiansLat1) * Math.cos(floatRadiansLat2) * Math.cos(floatRadiansLng2 - floatRadiansLng1));
+        return Math.round(deltaD * EARTH_RADIUS * 10000) / 10000;
+    }
+
 
     function getJourney(licensePlate, startTime, endTime) {
         $.ajax({
             url: 'http://192.168.30.56:4000/journey/path?platenumber=29E05989&from=1685057160&to=1685075160',
+            //url: 'http://192.168.30.56:4000/journey/path?platenumber='+ licensePlate + '&from=' + startTime + '&to=' + endTime,
             method: 'GET',
             contentType: 'application/json',
             dataType: 'json',
@@ -257,8 +336,14 @@ $(document).ready(function (){
     }
 
     $('#btn_tracking').click(function() {
-        console.log($('#start_time').val())
-        //getJourney()
+        let licensePlate = $('#license_plate').val()
+        let localStartTime = $('#start_time').val()
+        let localEndTime = $('#start_time').val()
+        
+        var startTime = moment(localStartTime).unix();
+        var endTime = moment(localEndTime).unix();
+
+        getJourney(licensePlate, startTime, endTime);
     })
 
 })
