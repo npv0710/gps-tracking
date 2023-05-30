@@ -20,4 +20,15 @@ body {
     box-shadow: 2px 3px 10px 0 rgba(0, 0, 0, .45); */
 }
 
+.gm-style .gm-style-iw.gm-style-iw-c {
+    box-shadow: 0 2px 7px 1px rgba(0,0,0,0.6) !important;
+}
+
+.gm-style .gm-style-iw.gm-style-iw-c .gm-style-iw-d  p {
+    font-weight: bold !important;
+}
+
+h3 {
+    color: red !important;
+}
 

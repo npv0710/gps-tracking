@@ -106,19 +106,6 @@ $(document).ready(function (){
             labelClass: 'CustomizeLabel',
         });
         //mMarker.setMap(map);
-
-        var startPoint = new google.maps.LatLng(21.036809,　105.782771)
-        startMarker = new google.maps.Marker({
-            position: startPoint,
-            title: "Điểm đón khách",
-            icon: 'https://s3-ap-southeast-1.amazonaws.com/image-emd/defaults/map-marker-1-32x32.png'
-        });
-        endMarker = new google.maps.Marker({
-            title: "Điểm trả",
-            icon: 'https://s3-ap-southeast-1.amazonaws.com/image-emd/defaults/map-marker-2-32x32.png'
-        });
-
-        startMarker.setMap(map)
     }
     
     var drivers = [
@@ -264,6 +251,10 @@ $(document).ready(function (){
         icon: 'https://s3-ap-southeast-1.amazonaws.com/image-emd/defaults/map-marker-2-32x32.png'
     })
 
+    var infoWindow = new google.maps.InfoWindow({
+        size: new google.maps.Size(360, 180)
+      });
+
     function drawTracking(points, startPoint, endPoint) {
         clearMap()
 
@@ -289,12 +280,17 @@ $(document).ready(function (){
         bounds.extend(startMarker.getPosition());
         bounds.extend(endMarker.getPosition());
         map.fitBounds(bounds);
+
+        let infoWindowPoint = new google.maps.LatLng(points[points.length - 6].lat(), points[points.length - 6].lng())
+        infoWindow.setContent('<b>50km</b>');
+        infoWindow.setPosition(centerPoint);
+        infoWindow.open(map);
     }
 
     function clearMap() {
         startMarker.setMap(null)
         startMarker.setMap(null)
-        polylineTracking.setMap(null)
+        if (polylineTracking) polylineTracking.setMap(null)
         polylineTracking = null
     }
 
@@ -312,8 +308,8 @@ $(document).ready(function (){
 
     function getJourney(licensePlate, startTime, endTime) {
         $.ajax({
-            url: 'http://192.168.30.56:4000/journey/path?platenumber=29E05989&from=1685057160&to=1685075160',
-            //url: 'http://192.168.30.56:4000/journey/path?platenumber='+ licensePlate + '&from=' + startTime + '&to=' + endTime,
+            //url: 'http://192.168.30.56:4000/journey/path?platenumber=29E05989&from=1685057160&to=1685075160',
+            url: 'https://journey.gsm-dev.emddi.xyz/journey/path?platenumber='+ licensePlate + '&from=' + startTime + '&to=' + endTime,
             method: 'GET',
             contentType: 'application/json',
             dataType: 'json',
@@ -338,10 +334,12 @@ $(document).ready(function (){
     $('#btn_tracking').click(function() {
         let licensePlate = $('#license_plate').val()
         let localStartTime = $('#start_time').val()
-        let localEndTime = $('#start_time').val()
+        let localEndTime = $('#end_time').val()
         
         var startTime = moment(localStartTime).unix();
         var endTime = moment(localEndTime).unix();
+
+
 
         getJourney(licensePlate, startTime, endTime);
     })
