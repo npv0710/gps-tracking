@@ -64,8 +64,16 @@
                 aria-label="License Plate" 
                 id="license_plate"
             >
-            <input id="start_time" class="form-control" type="datetime-local" step="1" placeholder="Start Time" aria-label="Start Time" id="start_time"/> 
-            <input id="end_time" type="datetime-local" class="form-control" step="1" placeholder="End Time" aria-label="End Time" id="end_time"> 
+            <!-- type="datetime-local" step="1"  -->
+            <input 
+                id="start_time" class="form-control"
+                type="text"
+                placeholder="Start Time" aria-label="Start Time" id="start_time"
+            /> 
+            <input id="end_time" class="form-control"
+                type="text"
+                placeholder="End Time" aria-label="End Time" id="end_time"
+            /> 
             <button class="btn btn-outline-secondary" 
             type="button" id="btn_tracking">Tracking</button>
           </div>

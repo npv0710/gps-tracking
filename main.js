@@ -340,12 +340,12 @@ $(document).ready(function (){
         let localStartTime = $('#start_time').val()
         let localEndTime = $('#end_time').val()
         
-        var startTime = moment(localStartTime).unix();
-        var endTime = moment(localEndTime).unix();
+        var startTime = moment(localStartTime).unix()
+        var endTime = moment(localEndTime).unix()
 
+        getJourney(licensePlate, localStartTime, localEndTime)
 
-
-        getJourney(licensePlate, startTime, endTime);
+        //getJourney(licensePlate, startTime, endTime);
     })
 
 })
