@@ -281,8 +281,12 @@ $(document).ready(function (){
         bounds.extend(endMarker.getPosition());
         map.fitBounds(bounds);
 
-        let infoWindowPoint = new google.maps.LatLng(points[points.length - 6].lat(), points[points.length - 6].lng())
-        infoWindow.setContent('<b>50km</b>');
+        let distance = 0;
+        for(let i = 0; i < points.length - 1; i ++) {
+            distance = distance + calculateDistanceTwoPoints({lat: points[i].lat(), lng: points[i].lng()}, {lat: points[i + 1].lat(), lng: points[i + 1].lng()})
+        }
+        distance = Math.round(distance);
+        infoWindow.setContent(distance.toString() + ' km');
         infoWindow.setPosition(centerPoint);
         infoWindow.open(map);
     }
