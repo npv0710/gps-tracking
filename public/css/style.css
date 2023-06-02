@@ -28,7 +28,8 @@ body {
     font-weight: bold !important;
 }
 
-h3 {
-    /* color: red !important; */
+.license-plate {
+    cursor: pointer;
+    color: red;
 }
 
