@@ -351,3 +351,5 @@ $(document).ready(function (){
 })
 
 console.log('edit from vps');
+console.log('commit 1');
+console.log('commit 2');
