@@ -391,3 +391,6 @@ $(document).ready(function (){
 
 console.log('commit 1');
 console.log('commit 2');
+
+console.log('check commit to create sub branch 1');
+console.log('check commit to create sub branch 2');
