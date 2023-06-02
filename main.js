@@ -305,7 +305,7 @@ $(document).ready(function (){
         }
         distance = Math.round(distance);
         //infoWindow.setContent(distance.toString() + ' km');
-        
+        distanceFromApi = Math.round(distanceFromApi / 1000)
         infoWindow.setContent(distanceFromApi + ' km');
 
         infoWindow.setPosition(centerPoint);
