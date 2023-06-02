@@ -208,9 +208,9 @@ $(document).ready(function (){
             columns: [
                 {title: "STT"},
                 {title: "License Plate"},
-                {title: "Device Code"}
+                {title: "Device Code"},
             ],
-            columnDefs: [
+            "columnDefs": [
                 {
                     targets: 0,
                     width: 60,
@@ -218,6 +218,11 @@ $(document).ready(function (){
                 {
                     targets: 1,
                     width: 150,
+                    render: function(data, type, row, meta) {
+                        return '<td>' +
+                                '<div class="license-plate">' + data + '</div>' +
+                                '</td>';
+                    }
                 }
             ],
             "paging": true,
@@ -237,6 +242,20 @@ $(document).ready(function (){
         })
     }
 
+    $(document).on('click', 'td .license-plate', function(e){
+        e.preventDefault()
+
+        let index = parseInt($(this).parents('tr').find('td').eq(0).html())
+
+        let driverData = tableDriver.row(index).data()
+
+        console.log(driverData);
+        $('#title_list_trips').text('Dannh sách chuyến theo biển số xe: ' + driverData[1])
+
+        $('#modal_list_trips').modal('show')
+
+    })
+
     loadGoogleMAP();
 
     createTableDrivers();
@@ -255,7 +274,7 @@ $(document).ready(function (){
         size: new google.maps.Size(360, 180)
       });
 
-    function drawTracking(points, startPoint, endPoint) {
+    function drawTracking(points, startPoint, endPoint, distanceFromApi) {
         clearMap()
 
         startMarker.setPosition(startPoint)
@@ -286,7 +305,10 @@ $(document).ready(function (){
             distance = distance + calculateDistanceTwoPoints({lat: points[i].lat(), lng: points[i].lng()}, {lat: points[i + 1].lat(), lng: points[i + 1].lng()})
         }
         distance = Math.round(distance);
-        infoWindow.setContent(distance.toString() + ' km');
+        //infoWindow.setContent(distance.toString() + ' km');
+        
+        infoWindow.setContent(distanceFromApi + ' km');
+
         infoWindow.setPosition(centerPoint);
         infoWindow.open(map);
     }
@@ -327,13 +349,29 @@ $(document).ready(function (){
                     return tempPoint
                 })
 
-                drawTracking(points, startPoint, endPoint)
+                getDistance(licensePlate, startTime, endTime, points, startPoint, endPoint)
             },
             error: function(err) {
                 console.log(err)
             }
         })
     }
+
+    function getDistance(licensePlate, startTime, endTime, points, startPoint, endPoint) {
+        $.ajax({
+            url: 'https://journey.gsm-dev.emddi.xyz/journey?platenumber='+ licensePlate + '&from=' + startTime + '&to=' + endTime,
+            method: 'GET',
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function(response) {
+                drawTracking(points, startPoint, endPoint, response.data.distance)
+            },
+            error: function(err) {
+                console.log(err)
+            }
+        })
+    }
+
 
     $('#btn_tracking').click(function() {
         let licensePlate = $('#license_plate').val()
