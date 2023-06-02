@@ -219,8 +219,8 @@ $(document).ready(function (){
                     targets: 1,
                     width: 150,
                     render: function(data, type, row, meta) {
-                        return '<td>' +
-                                '<div class="license-plate">' + data + '</div>' +
+                        return '<td class="license-plate">' +
+                                    data + 
                                 '</td>';
                     }
                 }
@@ -239,22 +239,21 @@ $(document).ready(function (){
             "ordering": false,
             "select": true,
             pageLength: 5
+
         })
+
+        $('#table_drivers tbody').on('click', 'tr', function () {
+            var data = tableDriver.row(this).data();
+            $('#title_list_trips').text('Dannh sách chuyến theo biển số xe: ' + data[1])
+            $('#modal_list_trips').modal('show')
+        });
     }
 
-    $(document).on('click', 'td .license-plate', function(e){
+    $(document).on('click', 'td.license-plate', function(e){
         e.preventDefault()
-
-        let index = parseInt($(this).parents('tr').find('td').eq(0).html())
-
-        let driverData = tableDriver.row(index).data()
-
-        console.log(driverData);
-        $('#title_list_trips').text('Dannh sách chuyến theo biển số xe: ' + driverData[1])
-
-        $('#modal_list_trips').modal('show')
-
     })
+
+    
 
     loadGoogleMAP();
 
@@ -306,7 +305,7 @@ $(document).ready(function (){
         }
         distance = Math.round(distance);
         //infoWindow.setContent(distance.toString() + ' km');
-        
+        distanceFromApi = Math.round(distanceFromApi / 1000)
         infoWindow.setContent(distanceFromApi + ' km');
 
         infoWindow.setPosition(centerPoint);
@@ -391,3 +390,8 @@ $(document).ready(function (){
 console.log('edit from vps');
 console.log('commit 1');
 console.log('commit 2');
+
+console.log('check commit to create sub branch 1');
+console.log('check commit to create sub branch 2');
+console.log('check commit to create sub branch 3');
+
