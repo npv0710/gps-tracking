@@ -387,11 +387,11 @@ $(document).ready(function (){
 
 })
 
-
-
+console.log('edit from vps');
 console.log('commit 1');
 console.log('commit 2');
 
 console.log('check commit to create sub branch 1');
 console.log('check commit to create sub branch 2');
 console.log('check commit to create sub branch 3');
+
