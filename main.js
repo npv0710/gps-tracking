@@ -395,3 +395,6 @@ console.log('check commit to create sub branch 1');
 console.log('check commit to create sub branch 2');
 console.log('check commit to create sub branch 3');
 
+// create branch dev
+console.log('Create new branch dev')
+
