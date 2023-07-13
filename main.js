@@ -398,3 +398,5 @@ console.log('check commit to create sub branch 3');
 // create branch dev
 console.log('Create new branch dev')
 
+console.log('Merge code using rebase')
+
